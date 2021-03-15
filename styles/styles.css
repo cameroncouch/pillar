@@ -1,0 +1,33 @@
+/* Mobile first styling */
+#overlay {
+    display: flex;
+    width: 90vw;
+    height: 100vh;
+    flex-wrap: wrap;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.drop-node {
+    border: 2px dashed grey;
+    width: 25px;
+    height: 50px;
+    margin: 10%;
+    display: none;
+}
+
+.active {
+    display: inline-block;
+}
+
+#pillar {
+    display: flex;
+    width: max-content;
+    padding: 20px;
+    background-color: hotpink;
+}
+
+#menu-wrapper {
+    display: none;
+}
