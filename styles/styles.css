@@ -1,33 +1,38 @@
 /* Mobile first styling */
-#overlay {
-    display: flex;
-    width: 90vw;
-    height: 100vh;
-    flex-wrap: wrap;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-.drop-node {
-    border: 2px dashed grey;
-    width: 25px;
-    height: 50px;
-    margin: 10%;
-    display: none;
-}
-
-.active {
-    display: inline-block;
-}
 
 #pillar {
+    cursor: grab;
     display: flex;
+    position: absolute;
+    align-items: center;
     width: max-content;
-    padding: 20px;
-    background-color: hotpink;
+    padding: 15px 20px;
+    border-radius: 500px;
+}
+
+#pillar:active {
+    cursor: grabbing;
 }
 
 #menu-wrapper {
     display: none;
+}
+
+#left-arrow, #right-arrow, #close, .segment {
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    width: 2em;
+    height: 2em;
+    margin: 0% 2%;
+}
+
+.segment-container, .segment {
+    width: max-content;
+    padding: 0;
+}
+
+.segment-container:nth-child(1) {
+    border-right: 2px solid #000000;
+    padding-right: 5px;
 }

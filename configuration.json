@@ -1,0 +1,20 @@
+{
+    "animate": true,
+    "arrowColor": "#000000",
+    "courseBorder": "#000000",
+    "courseColor": "#FFF000",
+    "fontColor": "#000000",
+    "hasScrollTop": true,
+    "moveable": true,
+    "segmentBorder": "#000000",
+    "segments": [
+        {
+            "chat": "Chat"
+        },
+        {
+            "feedback": "Feedback"
+        }
+    ],
+    "type": "pillar",
+    "xColor": "#000000"
+}
