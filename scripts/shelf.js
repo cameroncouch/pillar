@@ -86,7 +86,19 @@ var waitForResponse = setInterval(
         this.style.transform = 'scale(1.1)';
         this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
     }, true);
+    shelf.addEventListener('touchstart', function (evt) {
+        customShelf.shelfState.lifted = true;
+        this.style.cursor = 'grabbing';
+        this.style.transform = 'scale(1.1)';
+        this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
+    }, true);
     shelf.addEventListener('mouseup', function(evt) {
+        customShelf.shelfState.lifted = false;
+        this.style.cursor = 'grab';
+        this.style.boxShadow = '';
+        this.style.transform = '';
+    }, true);
+    shelf.addEventListener('touchend', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
         this.style.boxShadow = '';
@@ -98,6 +110,13 @@ var waitForResponse = setInterval(
         console.log(e.screenX, e.screenY);
         this.style.left = e.screenX - 80 +'px';
         this.style.top = e.screenY - 80 +'px';
+    }
+    }.bind(shelf), true);
+        // registers 'mousemove' event to body
+    window.addEventListener('touchmove', function(e){
+    if(customShelf.shelfState.lifted) {
+        this.style.left = e.touches[0].clientX - 50 +'px';
+        this.style.top = e.touches[0].clientY - 25 +'px';
     }
     }.bind(shelf), true);
     document.body.appendChild(shelf);

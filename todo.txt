@@ -1,10 +1,5 @@
 # JS
-- Dont use drag and drop, make own.
-- Pillar built from JSON
-    - JSON key value pairs feed into JS
-        - To build the Pillar and attach callbacks / event listeners
 - Scroll to top (also, make the scroll to top button optional and allow the functionality to be defined in JSON by user)
-- Proper offsets
 - Make the drag work on mobile
 - Make it look good on mobile
 - Make it WCAG compliant
