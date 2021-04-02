@@ -1,21 +1,31 @@
 "use strict";
-var ServiceShelf;
+//when the json has been returned as response, store response in a variable within shelf.js
+var waitForResponse = setInterval(
+  function() {
+    if(response) {
+      clearInterval(waitForResponse);
+      buildShelf(response);
+    } else { console.log('Waiting for response...'); }
+  }, 10);
 
-function buildShelf() {
+  function buildShelf(customizations) {
+
     var customShelf = {
-        animate: response.animate,
-        arrowColor: response.arrowColor,
-        courseBorder: response.courseBorder,
-        courseColor: response.courseColor,
-        fontColor: response.fontColor,
-        hasScrollTop: response.hasScrollTop,
-        moveable: response.moveable, 
-        pillarState: pillarState,
-        segmentBorder: response.segmentBorder,
-        segments: response.segments,
-        segmentColor: response.segmentColor,
-        type: response.type,
-        xColor: response.xColor
+      animate: customizations.animate,
+      arrowColor: customizations.arrowColor,
+      courseBorder: customizations.courseBorder,
+      courseColor: customizations.courseColor,
+      fontColor: customizations.fontColor,
+      hasScrollTop: customizations.hasScrollTop,
+      moveable: customizations.moveable, 
+      shelfState: {
+        lifted: false
+      },
+      segmentBorder: customizations.segmentBorder,
+      segments: customizations.segments,
+      segmentColor: customizations.segmentColor,
+      type: customizations.type,
+      xColor: customizations.xColor
     },
 // Setting up markup
     shelf = document.createElement('div'),
@@ -30,23 +40,23 @@ function buildShelf() {
     customShelf.segments.forEach(function(segment) { var button = document.createElement('button'); segmentsButtons.push(button); });
 
 // Attribute setup
-    shelf.setAttribute('id', 'pillar');
-    shelf.style.backgroundColor = customShelf.courseColor;
+    shelf.setAttribute('id', 'shelf');
+    shelf.style.background = customShelf.courseColor;
     expand.setAttribute('type', 'button');
     expand.setAttribute('id', 'left-arrow');
     expand.style.color = customShelf.arrowColor;
-    expand.innerText = '←';
+    expand.innerText = '⠗';
     scrollTop.setAttribute('type', 'button');
     scrollTop.setAttribute('id', 'right-arrow');
     scrollTop.style.color = customShelf.arrowColor;
-    scrollTop.innerText = '↑';
+    scrollTop.innerText = '⠗';
     closeX.setAttribute('type', 'button');
     closeX.setAttribute('id', 'close');
     closeX.style.color = customShelf.xColor;
     closeX.innerText = 'X';
     // Button type for all buttons segments
     segmentsButtons.forEach(function(segment) { segment.setAttribute('type', 'button'); customShelf.segmentColor ? segment.style.backgroundColor = customShelf.segmentColor : '' });
-    // Build pillar
+    // Build shelf
     segmentsContainers.forEach(function(segment, idx) { segment.appendChild(segmentsButtons[idx]); });
     shelf.appendChild(expand);
     shelf.insertAdjacentHTML("beforeend", shelfMarkup);
@@ -57,6 +67,7 @@ function buildShelf() {
         tableBody = shelfTable.childNodes[0],
         tableRow = tableBody.childNodes[0];
     
+    // apply customizations to each drawer
     segmentsContainers.forEach(function(segment, idx) { 
         segment.firstChild.innerText = Object.keys(customShelf.segments[idx]); 
         segment.firstChild.style.color = customShelf.fontColor;
@@ -65,39 +76,29 @@ function buildShelf() {
         tableRow.appendChild(segment); 
     });
     
-    expand.addEventListener('click', function () {
+    expand.addEventListener('click', function (evt) {
         shelfTable.style.display = shelfTable.style.display === 'inline-block' ? 'none' : 'inline-block';
     }, false);
     
-
-    return shelf;
-}
-
-
-var setConfig = setInterval(function() {
-    if(response) {
-        ServiceShelf = buildShelf();
-        ServiceShelf.addEventListener('mousedown', function (evt) {
-            pillarState.lifted = true;
-            // logic for following the mouse
-        }, false);
-        ServiceShelf.addEventListener('mouseup', function(evt) {
-            // logic for dropping the badge
-            pillarState.lifted = false;
-        }, false);
-        clearInterval(setConfig);
-        document.body.appendChild(ServiceShelf);
+    shelf.addEventListener('mousedown', function (evt) {
+        customShelf.shelfState.lifted = true;
+        this.style.cursor = 'grabbing';
+        this.style.transform = 'scale(1.1)';
+        this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
+    }, true);
+    shelf.addEventListener('mouseup', function(evt) {
+        customShelf.shelfState.lifted = false;
+        this.style.cursor = 'grab';
+        this.style.boxShadow = '';
+        this.style.transform = '';
+    }, true);
+        // registers 'mousemove' event to body
+    window.addEventListener('mousemove', function(e){
+    if(customShelf.shelfState.lifted) {
+        console.log(e.screenX, e.screenY);
+        this.style.left = e.screenX - 80 +'px';
+        this.style.top = e.screenY - 80 +'px';
     }
-}, 500);
-
-var pillarState = {
-    lifted: false,
-    position: 'SE'
-}
-
-
-
-//move to top function
-
-//mobile browser fix
-
+    }.bind(shelf), true);
+    document.body.appendChild(shelf);
+  }

@@ -2,7 +2,7 @@
     "animate": true,
     "arrowColor": "#000000",
     "courseBorder": "#000000",
-    "courseColor": "#FFF000",
+    "courseColor": "linear-gradient(156deg, rgb(132 200 205) 20%, rgb(99 153 194), rgb(86 136 153))",
     "fontColor": "#000000",
     "hasScrollTop": true,
     "moveable": true,
@@ -15,6 +15,6 @@
             "feedback": "Feedback"
         }
     ],
-    "type": "pillar",
+    "type": "shelf",
     "xColor": "#000000"
 }

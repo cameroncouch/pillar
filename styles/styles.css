@@ -1,6 +1,6 @@
 /* Mobile first styling */
 
-#pillar {
+#shelf {
     cursor: grab;
     display: flex;
     position: absolute;
@@ -8,10 +8,6 @@
     width: max-content;
     padding: 15px 20px;
     border-radius: 500px;
-}
-
-#pillar:active {
-    cursor: grabbing;
 }
 
 #menu-wrapper {
@@ -25,6 +21,20 @@
     width: 2em;
     height: 2em;
     margin: 0% 2%;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+#left-arrow {
+    transform: rotate(180deg);
+}
+
+#right-arrow {
+    transform: rotate(-90deg);
 }
 
 .segment-container, .segment {
