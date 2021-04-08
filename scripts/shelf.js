@@ -26,6 +26,7 @@ var waitForResponse = setInterval(
       segmentBorder: customizations.segmentBorder,
       segments: customizations.segments,
       segmentColor: customizations.segmentColor,
+      startingPosition: customizations.startingPosition,
       type: customizations.type,
       xColor: customizations.xColor
     },
@@ -47,6 +48,7 @@ var waitForResponse = setInterval(
 
 // Attribute setup
     shelf.setAttribute('id', 'shelf');
+    shelf.setAttribute('class', customShelf.startingPosition);
     shelf.style.background = customShelf.courseColor;
     expand.setAttribute('type', 'button');
     expand.setAttribute('id', 'left-arrow');
@@ -127,6 +129,7 @@ var waitForResponse = setInterval(
         this.style.transform = 'scale(1.1)';
         this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
     }, false);
+
     shelf.addEventListener('touchstart', function (evt) {
         customShelf.shelfState.lifted = true;
         this.style.cursor = 'grabbing';
@@ -135,19 +138,21 @@ var waitForResponse = setInterval(
         evt.preventDefault();
         evt.stopPropagation();
     }, false);
+
     shelf.addEventListener('mouseup', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
         this.style.boxShadow = '';
         this.style.transform = '';
     }, false);
+
     shelf.addEventListener('touchend', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
         this.style.boxShadow = '';
         this.style.transform = '';
     }, false);
-        // registers 'mousemove' event to body
+
     window.addEventListener('mousemove', function(e){
     if(customShelf.shelfState.lifted) {
         console.log(e.screenX, e.screenY);
@@ -155,7 +160,7 @@ var waitForResponse = setInterval(
         this.style.top = e.screenY - 80 +'px';
     }
     }.bind(shelf), false);
-        // registers 'mousemove' event to body
+
     window.addEventListener('touchmove', function(e){
     if(customShelf.shelfState.lifted) {
         this.style.left = e.touches[0].clientX - 50 +'px';

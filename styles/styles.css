@@ -3,12 +3,47 @@
 #shelf {
     cursor: grab;
     display: flex;
-    position: sticky;
+    position: absolute;
     align-items: center;
     width: max-content;
     padding: 15px 20px;
     border-radius: 500px;
     transform-style: preserve-3d;
+}
+
+.NW {
+
+}
+
+.N {
+
+}
+
+.NE {
+
+}
+
+.W {
+
+}
+
+/* No center positioning option */
+
+.E {
+
+}
+
+.SW {
+
+}
+
+.S {
+
+}
+
+.SE {
+    top: 90vh;
+    left: 50vw;
 }
 
 #menu-wrapper {

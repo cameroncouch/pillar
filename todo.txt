@@ -1,13 +1,5 @@
 # JS
-- Scroll to top (also, make the scroll to top button optional and allow the functionality to be defined in JSON by user)
+- Set up close X to kill the shelf for some duration (session storage)
 - Don't allow drag off-screen
-- Make the drag work on mobile
-- Make it look good on mobile
 - Make it WCAG compliant
-
-# CSS
-- Make it look sweet!
-
-# HTML
-- For demo purposes...
-    - Make the page long so we can use the scroll to top
+- Set up demo callbacks on the shelf buttons
