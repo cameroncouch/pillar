@@ -1,8 +1,13 @@
 {
     "animate": true,
-    "arrowColor": "#000000",
+    "leftArrowColor": "#000000",
+    "rightArrowColor": "#FFF",
     "courseBorder": "#000000",
     "courseColor": "linear-gradient(156deg, rgb(132 200 205) 20%, rgb(99 153 194), rgb(86 136 153))",
+    "fontFamily": {
+        "google":false, 
+        "name":"system-ui, sans-serif"
+    },
     "fontColor": "#000000",
     "hasScrollTop": true,
     "moveable": true,

@@ -1,5 +1,6 @@
 # JS
 - Scroll to top (also, make the scroll to top button optional and allow the functionality to be defined in JSON by user)
+- Don't allow drag off-screen
 - Make the drag work on mobile
 - Make it look good on mobile
 - Make it WCAG compliant

@@ -12,9 +12,11 @@ var waitForResponse = setInterval(
 
     var customShelf = {
       animate: customizations.animate,
-      arrowColor: customizations.arrowColor,
+      leftArrowColor: customizations.leftArrowColor,
+      rightArrowColor: customizations.rightArrowColor,
       courseBorder: customizations.courseBorder,
       courseColor: customizations.courseColor,
+      fontFamily: customizations.fontFamily,
       fontColor: customizations.fontColor,
       hasScrollTop: customizations.hasScrollTop,
       moveable: customizations.moveable, 
@@ -28,11 +30,15 @@ var waitForResponse = setInterval(
       xColor: customizations.xColor
     },
 // Setting up markup
+    // googleFont = customShelf['fontFamily']['google'] ? customShelf['fontFamily']['name'] : undefined;
+    // if(googleFont) {
+    //     document.head.append('<link href="https://fonts.googleapis.com/css2?family=' + googleFont + '&display=swap" rel="stylesheet">');
+    // }
     shelf = document.createElement('div'),
     shelfMarkup = customShelf.shelfMarkup ? customShelf.shelfMarkup : "<table id='menu-wrapper'><tbody><tr id='main-menu'></tr></tbody></table>",
     segmentsContainers = [],
     segmentsButtons = [],
-    scrollTop = customShelf.hasScrollTop ? document.createElement('button') : undefined,
+    scrollTopArrow = customShelf.hasScrollTop ? document.createElement('button') : undefined,
     closeX = document.createElement('button'),
     expand = document.createElement('button');
 
@@ -44,23 +50,23 @@ var waitForResponse = setInterval(
     shelf.style.background = customShelf.courseColor;
     expand.setAttribute('type', 'button');
     expand.setAttribute('id', 'left-arrow');
-    expand.style.color = customShelf.arrowColor;
+    expand.style.color = customShelf.leftArrowColor;
     expand.innerText = '⠗';
-    scrollTop.setAttribute('type', 'button');
-    scrollTop.setAttribute('id', 'right-arrow');
-    scrollTop.style.color = customShelf.arrowColor;
-    scrollTop.innerText = '⠗';
+    scrollTopArrow.setAttribute('type', 'button');
+    scrollTopArrow.setAttribute('id', 'right-arrow');
+    scrollTopArrow.style.color = customShelf.rightArrowColor;
+    scrollTopArrow.innerText = '⠗';
     closeX.setAttribute('type', 'button');
     closeX.setAttribute('id', 'close');
     closeX.style.color = customShelf.xColor;
-    closeX.innerText = 'X';
+    closeX.innerText = '✕';
     // Button type for all buttons segments
     segmentsButtons.forEach(function(segment) { segment.setAttribute('type', 'button'); customShelf.segmentColor ? segment.style.backgroundColor = customShelf.segmentColor : '' });
     // Build shelf
     segmentsContainers.forEach(function(segment, idx) { segment.appendChild(segmentsButtons[idx]); });
     shelf.appendChild(expand);
     shelf.insertAdjacentHTML("beforeend", shelfMarkup);
-    shelf.appendChild(scrollTop);
+    shelf.appendChild(scrollTopArrow);
     shelf.appendChild(closeX);
     
     var shelfTable = shelf.childNodes[1],
@@ -71,6 +77,7 @@ var waitForResponse = setInterval(
     segmentsContainers.forEach(function(segment, idx) { 
         segment.firstChild.innerText = Object.keys(customShelf.segments[idx]); 
         segment.firstChild.style.color = customShelf.fontColor;
+        segment.firstChild.style.fontFamily = customShelf.fontFamily.name;
         segment.setAttribute('class','segment-container');
         segment.firstChild.setAttribute('class', 'segment');
         tableRow.appendChild(segment); 
@@ -78,32 +85,68 @@ var waitForResponse = setInterval(
     
     expand.addEventListener('click', function (evt) {
         shelfTable.style.display = shelfTable.style.display === 'inline-block' ? 'none' : 'inline-block';
+
+    }, false);
+
+    expand.addEventListener('touchstart', function (evt) {
+        shelfTable.style.display = shelfTable.style.display === 'inline-block' ? 'none' : 'inline-block';
+        evt.preventDefault();
+        evt.stopPropagation();
+    }, false);
+
+    window.addEventListener('scroll', function (evt) {
+        var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+        if(scrollTop > 0) {
+            scrollTopArrow.classList.add('right-arrow-scrolled');
+        }
+        if(scrollTop == 0) {
+            scrollTopArrow.classList.value.includes('right-arrow-scrolled') ? scrollTopArrow.classList.remove('right-arrow-scrolled') : '';
+        }
     }, false);
     
+    scrollTopArrow.addEventListener('click', function(evt) {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth"
+        });
+    }, false);
+
+    scrollTopArrow.addEventListener('touchstart', function(evt) {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth"
+        });
+        evt.stopPropagation();
+    }, false);
+
     shelf.addEventListener('mousedown', function (evt) {
         customShelf.shelfState.lifted = true;
         this.style.cursor = 'grabbing';
         this.style.transform = 'scale(1.1)';
         this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
-    }, true);
+    }, false);
     shelf.addEventListener('touchstart', function (evt) {
         customShelf.shelfState.lifted = true;
         this.style.cursor = 'grabbing';
         this.style.transform = 'scale(1.1)';
         this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
-    }, true);
+        evt.preventDefault();
+        evt.stopPropagation();
+    }, false);
     shelf.addEventListener('mouseup', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
         this.style.boxShadow = '';
         this.style.transform = '';
-    }, true);
+    }, false);
     shelf.addEventListener('touchend', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
         this.style.boxShadow = '';
         this.style.transform = '';
-    }, true);
+    }, false);
         // registers 'mousemove' event to body
     window.addEventListener('mousemove', function(e){
     if(customShelf.shelfState.lifted) {
@@ -111,13 +154,13 @@ var waitForResponse = setInterval(
         this.style.left = e.screenX - 80 +'px';
         this.style.top = e.screenY - 80 +'px';
     }
-    }.bind(shelf), true);
+    }.bind(shelf), false);
         // registers 'mousemove' event to body
     window.addEventListener('touchmove', function(e){
     if(customShelf.shelfState.lifted) {
         this.style.left = e.touches[0].clientX - 50 +'px';
         this.style.top = e.touches[0].clientY - 25 +'px';
     }
-    }.bind(shelf), true);
-    document.body.appendChild(shelf);
+    }.bind(shelf), false);
+    document.body.insertBefore(shelf, document.body.firstChild);
   }
