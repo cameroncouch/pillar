@@ -3,12 +3,17 @@
 #shelf {
     cursor: grab;
     display: flex;
-    position: absolute;
+    position: fixed;
     align-items: center;
     width: max-content;
     padding: 15px 20px;
     border-radius: 500px;
     transform-style: preserve-3d;
+
+}
+
+.hidden-by-user {
+    display: none !important;
 }
 
 .NW {

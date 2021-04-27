@@ -4,6 +4,9 @@ var waitForResponse = setInterval(
   function() {
     if(response) {
       clearInterval(waitForResponse);
+      if(window.sessionStorage.getItem('hideSvcShelf') == true || document.cookie.indexOf('hideSvcShelf') > -1) {
+          return;
+      }
       buildShelf(response);
     } else { console.log('Waiting for response...'); }
   }, 10);
@@ -26,6 +29,7 @@ var waitForResponse = setInterval(
       segmentBorder: customizations.segmentBorder,
       segments: customizations.segments,
       segmentColor: customizations.segmentColor,
+      sessionStorage: customizations.sessionStorage,
       startingPosition: customizations.startingPosition,
       type: customizations.type,
       xColor: customizations.xColor
@@ -121,6 +125,18 @@ var waitForResponse = setInterval(
             behavior: "smooth"
         });
         evt.stopPropagation();
+    }, false);
+
+    closeX.addEventListener('click', function(evt) {
+        customShelf.shelfState.hidden = true;
+        shelf.classList.add('hidden-by-user');
+        if(customShelf.sessionStorage) {
+            try {
+                window.sessionStorage.setItem('hideSvcShelf', true);
+            } catch (e) { console.warn(e); }
+        } else {
+            document.cookie = 'hideSvcShelf=true;SameSite=strict;Secure;max-age=60'; // test value - should be configurable in JSON
+        }
     }, false);
 
     shelf.addEventListener('mousedown', function (evt) {
