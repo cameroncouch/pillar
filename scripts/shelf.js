@@ -2,12 +2,12 @@
 //when the json has been returned as response, store response in a variable within shelf.js
 var waitForResponse = setInterval(
   function() {
-    if(response) {
+    if(jsonResponse) {
       clearInterval(waitForResponse);
       if(window.sessionStorage.getItem('hideSvcShelf') == true || document.cookie.indexOf('hideSvcShelf') > -1) {
           return;
       }
-      buildShelf(response);
+      buildShelf(jsonResponse);
     } else { console.log('Waiting for response...'); }
   }, 10);
 
@@ -32,7 +32,9 @@ var waitForResponse = setInterval(
       sessionStorage: customizations.sessionStorage,
       startingPosition: customizations.startingPosition,
       type: customizations.type,
-      xColor: customizations.xColor
+      xColor: customizations.xColor,
+      width: 0,
+      height: 0,
     },
 // Setting up markup
     // googleFont = customShelf['fontFamily']['google'] ? customShelf['fontFamily']['name'] : undefined;
@@ -90,14 +92,13 @@ var waitForResponse = setInterval(
     });
     
     expand.addEventListener('click', function (evt) {
+        evt.stopPropagation();
         shelfTable.style.display = shelfTable.style.display === 'inline-block' ? 'none' : 'inline-block';
-
     }, false);
 
     expand.addEventListener('touchstart', function (evt) {
         shelfTable.style.display = shelfTable.style.display === 'inline-block' ? 'none' : 'inline-block';
-        evt.preventDefault();
-        evt.stopPropagation();
+
     }, false);
 
     window.addEventListener('scroll', function (evt) {
@@ -140,40 +141,34 @@ var waitForResponse = setInterval(
     }, false);
 
     shelf.addEventListener('mousedown', function (evt) {
+        evt.stopPropagation();
         customShelf.shelfState.lifted = true;
         this.style.cursor = 'grabbing';
-        this.style.transform = 'scale(1.1)';
-        this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
     }, false);
 
     shelf.addEventListener('touchstart', function (evt) {
         customShelf.shelfState.lifted = true;
         this.style.cursor = 'grabbing';
-        this.style.transform = 'scale(1.1)';
-        this.style.boxShadow = '0px 0px 1px 1px rgba(0,0,0,1)';
-        evt.preventDefault();
-        evt.stopPropagation();
     }, false);
 
     shelf.addEventListener('mouseup', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
-        this.style.boxShadow = '';
-        this.style.transform = '';
     }, false);
 
     shelf.addEventListener('touchend', function(evt) {
         customShelf.shelfState.lifted = false;
         this.style.cursor = 'grab';
-        this.style.boxShadow = '';
-        this.style.transform = '';
     }, false);
 
     window.addEventListener('mousemove', function(e){
     if(customShelf.shelfState.lifted) {
-        console.log(e.screenX, e.screenY);
-        this.style.left = e.screenX - 80 +'px';
-        this.style.top = e.screenY - 80 +'px';
+        if(e.screenX < window.innerWidth - customShelf.width * .62 && e.screenX > 0 + customShelf.width * .55) {
+            this.style.left = e.screenX - 50 +'px';
+        }
+        if(e.screenY < window.innerHeight && e.screenY > 0 + customShelf.height * 2) {
+            this.style.top = e.screenY - customShelf.height * 2 + 'px';
+        }
     }
     }.bind(shelf), false);
 
@@ -183,5 +178,8 @@ var waitForResponse = setInterval(
         this.style.top = e.touches[0].clientY - 25 +'px';
     }
     }.bind(shelf), false);
+
     document.body.insertBefore(shelf, document.body.firstChild);
+    customShelf.width = shelf.offsetWidth;
+    customShelf.height = shelf.offsetHeight;
   }

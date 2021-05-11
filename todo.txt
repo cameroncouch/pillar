@@ -1,5 +1,4 @@
 - Remove inline styling
-- Stop shelf from scaling when clicking on child elements
 - Set up drag styling to be a calculation based on box-model values
 - Don't allow drag off-screen
 - Make it WCAG compliant
