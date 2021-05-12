@@ -18,6 +18,9 @@
         },
         {
             "feedback": "Feedback"
+        },
+        {
+            "help": "Help"
         }
     ],
     "startingPosition": "SE",

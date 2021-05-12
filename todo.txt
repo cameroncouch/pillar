@@ -1,5 +1,6 @@
-- Remove inline styling
 - Set up drag styling to be a calculation based on box-model values
+- Set up function that "drops" the shelf when mouseX or mouseY < 0 or > width/height
+- Remove inline styling
 - Don't allow drag off-screen
 - Make it WCAG compliant
 - Set up animations
